@@ -28,7 +28,7 @@ app.get('/people', function(req, res) {
 
         // close connection
         query.on('end', function() {
-            client.end();
+            done();
             return res.json(results);
         });
 
@@ -48,6 +48,8 @@ app.post('/people', function(req, res) {
         client.query("INSERT INTO people (name, address) VALUES ($1, $2) RETURNING id",
             [addPerson.name, addPerson.address],
             function (err, result) {
+                done();
+
                 if(err) {
                     console.log("Error inserting data: ", err);
                     res.send(false);
